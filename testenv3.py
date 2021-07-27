@@ -24,11 +24,9 @@ def func4_365():
         delay_periods = float(entries['Delay Start, (periods)'].get())
         remaining_loan = float(entries['Amount Payable, $'].get())
         #calc#
-        comp_periods = float(total_periods - delay_periods)
-        q = (1 + r)** delay_periods
+        comp_periods = float(total_periods - delay_periods) #n0 of compounding periods
+        q = (1 + r) ** delay_periods #percentage ^compounding periods
         x = total_withdrawn * (1 + r) - total_withdrawn
-        if comp_periods > 1: 
-            x  = (total_withdrawn * (1 + r) - total_withdrawn) * delay_periods
         q = (1 + r) ** comp_periods
         monthly = r * ( (q * total_withdrawn - remaining_loan) / ( q - 1 ))
         monthly = ("%8.2f" % monthly).strip()
@@ -38,9 +36,9 @@ def func4_365():
 
         
     def final_balance(entries):
-        
+                         
         r = float(entries['Annual Rate, %'].get()) / 100 / 12
-        u = float(entries['Rate for Unspent, %'].get())
+        u = float(entries['Rate for Unspent, %'].get()) / 100 / 12
         total_withdrawn = float(entries['Amount Withdrawn, $'].get())
         total_loan = float(entries['Total Loan, $'].get())
         total_periods = float(entries['Number of Periods'].get())
@@ -66,7 +64,7 @@ def func4_365():
         print("Amount Payable: %f" % float(remaining))
 
 
-    def make_form(root, fields):
+    def makeform(root, fields):
 
         entries = {}
         for field in fields:
@@ -87,18 +85,20 @@ def func4_365():
         if __name__ == '__main__':
             root = tk.Tk()
             root.title("Delay + (Un)-Used Funds Interst Calc - 365")
-            ents = make_form(root, fields)
+            ents = makeform(root, fields)
             s2 = 'style2.TButton'
-            s = tk.Style()
+            s = ttk.Style()
             s.map(s2, foreground=[('', 'blue')])
-            b1 = tk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final_balance(e)))
+            b1 = ttk.Button(root, style=s2, text='Final Balance', command=(lambda e=ents: final_balance(e)))
             b1.pack(side=tk.LEFT, padx=5, pady=5)
-            b3 = tk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
             b3.pack(side=tk.LEFT, padx=5, pady=5)
 
-    style2 = tk.Style()
+    style2 = ttk.Style()
     style2.configure('TEntry', foreground='blue')
     start4_365()
+
+
 
 
 def func4_360():
@@ -129,15 +129,15 @@ def func4_360():
         
     def final_balance(entries):
         
-        r = float(entries['Annual Rate, %']).get() / 100 / 360
+        r = (float(entries['Annual Rate, %'].get())) / 100 / 360
         r = r * 30.41666667 * 1.013888889
-        u = float(entries['Rate for Unspent, %']).get()
-        total_withdrawn = float(entries['Amount Withdrawn, $']).get()
-        total_loan = float(entries['Total Loan, $']).get()
-        total_periods = float(entries['Number of Periods']).get()
-        delay_periods = float(entries['Delay Start, (periods)']).get()
-        monthly = float(entries['No. of Monthly Payments']).get()
-        remaining_loan = float(entries['Amount Payable, $']).get()
+        u = (float(entries['Rate for Unspent, %'].get())) / 100 / 360
+        total_withdrawn = float(entries['Amount Withdrawn, $'].get())
+        total_loan = float(entries['Total Loan, $'].get())
+        total_periods = float(entries['Number of Periods'].get())
+        delay_periods = float(entries['Delay Start, (periods)'].get())
+        monthly = float(entries['No. of Monthly Payments'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
         comp_periods = float(total_periods - delay_periods)
         #calculation#
         x = total_withdrawn * (1 + r) - total_withdrawn
@@ -156,7 +156,7 @@ def func4_360():
         print("Amount Payable: %f" % float(remaining))
 
 
-    def make_form(root, fields):
+    def makeform(root, fields):
 
         entries = {}
         for field in fields:
@@ -177,16 +177,16 @@ def func4_360():
         if __name__ == '__main__':
             root = tk.Tk()
             root.title("Delay + (Un)-Used Funds Interst Calc - 360")
-            ents = make_form(root, fields)
+            ents = makeform(root, fields)
             s2 = 'style2.TButton'
-            s = tk.Style()
+            s = ttk.Style()
             s.map(s2, foreground=[('', 'blue')])
-            b1 = tk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final_balance(e)))
+            b1 = ttk.Button(root, style=s2, text='Final Balance', command=(lambda e=ents: final_balance(e)))
             b1.pack(side=tk.LEFT, padx=5, pady=5)
-            b3 = tk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
             b3.pack(side=tk.LEFT, padx=5, pady=5)
 
-    style2 = Style()
+    style2 = ttk.Style()
     style2.configure('TEntry', foreground='blue')
     start4_360()
 #---Func4End---#

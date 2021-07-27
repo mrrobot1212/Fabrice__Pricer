@@ -86,6 +86,7 @@ def func1_365_():
     start1_365()
 
 
+
 def func1_360_():
 
     fields = ('Loan Principle, $','Annual Rate, %', 'Number of Payments',  'No of Monthly Payments', 'Total Payable, $')

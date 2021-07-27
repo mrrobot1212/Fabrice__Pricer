@@ -1,0 +1,607 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter.ttk import *
+import tkinter as tk
+import random
+
+
+root=Tk()
+
+results_ = []
+#---Func1Start---#
+
+def func1_365_():
+
+    fields = ('Loan Principle, $','Annual Rate, %', 'Number of Payments',  'No of Monthly Payments', 'Total Payable, $')
+
+    def monthly_payment(entries):
+        
+        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
+        print("r", r)
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Payments'].get())
+        remaining_loan = float(entries['Total Payable, $'].get())
+        q = (1 + r)** n
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No of Monthly Payments'].delete(0, tk.END)
+        entries['No of Monthly Payments'].insert(0, monthly )
+        print("No of Monthly Payments: %f" % float(monthly))
+
+    def final_balance(entries):
+        global results_ 
+
+        
+        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
+        print("r", r)
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Payments'].get()) 
+        monthly = float(entries['No of Monthly Payments'].get())
+        q = (1 + r) ** n
+        remaining = q * loan  - ( (q - 1) / r) * monthly
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Total Payable, $'].delete(0, tk.END)
+        entries['Total Payable, $'].insert(0, remaining )
+        print("Total Payable, %f" % float(remaining))
+        results_.append(remaining)
+        print(results_)
+
+    def makeform(root, fields):
+        entries = {}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field+": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, 
+                    fill=tk.X, 
+                    padx=5, 
+                    pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, 
+                    expand=tk.YES, 
+                    fill=tk.X)
+            entries[field] = ent
+        return entries
+
+    def start1_365():
+
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Interst Rate Calc -- 365")
+            ents = makeform(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Final Balance', command=(lambda e=ents: final_balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3.pack(side=tk.LEFT, padx=5, pady=5)
+
+    
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start1_365()
+
+
+def func1_360_():
+
+    fields = ('Loan Principle, $','Annual Rate, %', 'Number of Payments',  'No of Monthly Payments', 'Total Payable, $')
+    
+    def monthly_payment(entries):
+        
+        r = (float(entries['Annual Rate, %'].get())) / 100 / 360
+        r = r * 30.41666667 * 1.013888889
+        print("r", r)
+        loan = float(entries['Loan Principle, $'].get())
+        n = float(entries['Number of Payments'].get())
+        remaining_loan = float(entries['Total Payable, $'].get())
+        q = (1 + r) ** n
+        monthly = r * ((q * loan - remaining_loan) / (q - 1))
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No of Monthly Payments'].delete(0, tk.END)
+        entries['No of Monthly Payments'].insert(0, monthly)
+        print("Monthly Payment: %f" % float(monthly))
+
+    def final_balance(entries):
+        global results_
+        
+        r = (float(entries['Annual Rate, %'].get()) / 100) / 360
+        r = r * 30.41666667 * 1.013888889
+        print("r", r)
+        loan = float(entries['Loan Principle, $'].get())
+        n = float(entries['Number of Payments'].get())
+        monthly = float(entries['No of Monthly Payments'].get())
+        q = (1 + r) ** n
+        remaining = q * loan - ((q - 1) / r) * monthly
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Total Payable, $'].delete(0, tk.END)
+        entries['Total Payable, $'].insert(0, remaining)
+        print("Total Payable, $: %f" % float(remaining))
+        results_.append(remaining)
+        print(results_)
+
+    def makeform(root, fields):
+        
+        entries = {}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries
+
+
+    def start1_360():
+        
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Interest Rate Calc -- 360")
+            ents = makeform(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Final Balance', command=(lambda e=ents: final_balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3.pack(side=tk.LEFT, padx=5, pady=5)
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start1_360()
+#---Func1End---#
+
+
+
+
+#---Func2Start---#
+
+def func2_360_():
+
+    fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Number of Periods', 'No. of Monthly Payments',  'Amount Payable, $')
+
+    def monthly__payment(entries):
+        
+        r = (float(ttk.Entry(root, text='Annual Rate, %').get())) / 100 / 360       #/360 x 30.41666667   (instead of dividing by 12)
+        r= r * 30.41666667 * 1.013888889
+        loan = float(entries['Amount Withdrawn, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        periods = float(entries['Number of Periods'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        #calculation#
+        q = (1 + r)** n
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No. of Monthly Payments'].delete(0, tk.END)
+        entries['No. of Monthly Payments'].insert(0, monthly )
+        print("Monthly Payment: %f" % float(monthly))
+
+    def final__balance(entries):
+        
+        global results_
+
+        r= float(entries['Annual Rate, %'].get()) / 100 / 360
+        r = r * 30.41666667 * 1.013888889
+        total_withdrawn = float(entries['Amount Withdrawn, $'].get())
+        total_periods = float(entries['Number of Periods'].get())
+        monthly = float(entries['No. of Monthly Payments'].get())
+        u = float(entries['Rate for Unspent, %'].get()) /100 / 12
+        total_loan = float(entries['Total Loan, $'].get())
+        q = (1 + r) ** total_periods
+        unspent = total_loan - total_withdrawn
+        unspent_r = (unspent * (1 + u) ** total_periods) - (unspent)
+        remaining = (q * total_withdrawn - ((q - 1) / r) * monthly) + (unspent_r)
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Amount Payable, $'].delete(0, tk.END)
+        entries['Amount Payable, $'].insert(0, remaining)
+        print("Amount Payable: %f" % float(remaining))
+        results_.append(remaining)
+        print(results_)
+
+    def make_form(root, fields):
+        
+        entries={}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries 
+
+    def start2_360():
+        
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Used and Un-Used Funds Interst Calc - 360")
+            ents = make_form(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final__balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3.pack(side=tk.LEFT, padx=5, pady=5)
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start2_360()
+
+
+def func2_365_():
+
+    fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Number of Periods', 'No. of Monthly Payments',  'Amount Payable, $')
+
+    def monthly__payment(entries):
+        
+        r = (float(ttk.Entry(root, text='Annual Rate, %').get())) / 100 / 12       
+        loan = float(entries['Amount Withdrawn, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        periods = float(entries['Number of Periods'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        #calculation#
+        q = (1 + r)** n
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No. of Monthly Payments'].delete(0, tk.END)
+        entries['No. of Monthly Payments'].insert(0, monthly )
+        print("Monthly Payment: %f" % float(monthly))
+
+    def final__balance(entries):
+        
+        global results_
+
+        r= float(entries['Annual Rate, %'].get()) / 100 / 12
+        total_withdrawn = float(entries['Amount Withdrawn, $'].get())
+        total_periods = float(entries['Number of Periods'].get())
+        monthly = float(entries['No. of Monthly Payments'].get())
+        u = float(entries['Rate for Unspent, %'].get()) /100 / 12
+        total_loan = float(entries['Total Loan, $'].get())
+        #calc#
+        q = (1 + r) ** total_periods
+        unspent = total_loan - total_withdrawn
+        unspent_r = (unspent * (1 + u) ** total_periods) - (unspent)
+        remaining = (q * total_withdrawn - ((q - 1) / r) * monthly) + (unspent_r)
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Amount Payable, $'].delete(0, tk.END)
+        entries['Amount Payable, $'].insert(0, remaining)
+        print("Amount Payable: %f" % float(remaining))
+        results_.append(remaining)
+        print(results_)
+
+    def make_form(root, fields):
+        
+        entries={}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries 
+
+    
+
+    def start2_365():
+        
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Used and Un-Used Funds Interst Calc - 365")
+            ents = make_form(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final__balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3.pack(side=tk.LEFT, padx=5, pady=5)
+        
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start2_365()
+#---Func2End---#
+
+
+
+
+#---Func3Start---#
+def func3_360_():
+    
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Number of Periods', 'No. of Monthly Payments', 'Amount Payable, $')
+
+    def monthly_payment(entries):
+        
+        r = (float(ttk.Entry(root, text='Annual Rate, $').get())) / 100 / 360
+        r= r * 30.41666667 * 1.013888889
+        print("r", r)
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        delay_periods = float(entries['Delay Start, (periods)'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        #calculation#
+        delay = float(n - delay_periods)
+        q = (1 + r)** delay_periods
+        x = loan * (1 + r) - loan
+        if delay > 1 :
+            x  = (loan * (1 + r) - loan) * delay
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = float(monthly)
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No. of Monthly Payments'].delete(0, tk.END)
+        entries['No. of Monthly Payments'].insert(0, monthly )
+        print("Monthly Payment: %f" % float(monthly))
+
+
+    def final_balance(entries):
+
+        global results_
+
+        r = (float(entries['Annual Rate, %'].get())) / 100 / 360    
+        r = r * 30.41666667 * 1.013888889
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        delay_periods = float(entries['Delay Start, (periods)'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        delay = float(n - delay_periods)
+        ###calc###
+        x = loan * (1 + r) - loan
+        if delay > 1 :
+            x  = (loan * (1 + r) - loan) * delay
+        q = (1 + r) ** delay
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = ("%8.2f" % monthly).strip()
+        monthly = float(monthly)
+        remaining = (q * loan - ((q - 1) / r) * monthly) 
+        remaining = remaining + x
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Amount Payable, $'].delete(0, tk.END)
+        entries['Amount Payable, $'].insert(0, remaining)
+        print("Amount Payable: %f" % float(remaining))
+        results_.append(remaining)
+        print(results_)
+
+    
+    def make_form(root, fields):
+        
+        entries={}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries 
+
+    def start3_360_():
+        
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Delayed Compund Interest - 360")
+            ents = make_form(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final_balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b3 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b3.pack(side=tk.LEFT, padx=5, pady=5)
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start3_360_()
+
+
+def func3_365_():
+
+    
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Number of Periods', 'No. of Monthly Payments', 'Amount Payable, $')
+
+    
+    def monthly_payment(entries):
+
+        r = float(entries['Annual Rate, %']).get() / 100 / 12
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        delay_periods = float(entries['Delay Start, (periods)'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        #calculation#
+        delay = float(n - delay_periods)
+        q = (1 + r)** delay_periods
+        x = loan * (1 + r) - loan
+        if delay > 1 :
+            x  = (loan * (1 + r) - loan) * delay
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        monthly = ("%8.2f" % monthly).strip()
+        entries['No. of Monthly Payments'].delete(0, tk.END)
+        entries['No. of Monthly Payments'].insert(0, monthly )
+        print("Monthly Payment: %f" % float(monthly))
+        
+
+
+    def final_balance(entries):
+
+        global results_
+
+        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
+        loan = float(entries['Loan Principle, $'].get())
+        n =  float(entries['Number of Periods'].get())
+        delay_periods = float(entries['Delay Start, (periods)'].get())
+        remaining_loan = float(entries['Amount Payable, $'].get())
+        delay = float(n - delay_periods)
+        ###calc###
+        x = loan * (1 + r) - loan
+        if delay > 1 :
+            x  = (loan * (1 + r) - loan) * delay
+        y = x
+        q = (1 + r) ** delay
+        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
+        remaining = (q * loan - ((q - 1) / r) * monthly)
+        monthly = ("%8.2f" % monthly).strip()
+        remaining = float(remaining + y)
+        remaining = ("%8.2f" % remaining).strip()
+        entries['Amount Payable, $'].delete(0, tk.END)
+        entries['Amount Payable, $'].insert(0, remaining)
+        print("Amount Payable: %f" % float(remaining))
+        
+        results_.append(remaining)
+        print(results_)
+        
+    def make_form(root, fields):
+            
+        entries={}
+        for field in fields:
+            print(field)
+            row = tk.Frame(root)
+            lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
+            ent = tk.Entry(row)
+            ent.insert(0, "0")
+            row.pack(side=tk.TOP, fill=tk.X, padx=5, pady=5)
+            lab.pack(side=tk.LEFT)
+            ent.pack(side=tk.RIGHT, expand=tk.YES, fill=tk.X)
+            entries[field] = ent
+        return entries 
+
+  
+
+
+    def start3_365_():
+        
+        if __name__ == '__main__':
+            root = tk.Tk()
+            root.title("Delayed Compund Interest - 365")
+            ents = make_form(root, fields)
+            s2 = 'style2.TButton'
+            s = ttk.Style()
+            s.map(s2, foreground=[('', 'blue')])
+            b1 = ttk.Button(root, style=s2, text='Amount Payable', command=(lambda e=ents: final_balance(e)))
+            b1.pack(side=tk.LEFT, padx=5, pady=5)
+            b2 = ttk.Button(root, style=s2, text='Quit', command=root.destroy)
+            b2.pack(side=tk.LEFT, padx=5, pady=5)
+            
+           
+
+    style2 = ttk.Style()
+    style2.configure('TEntry', foreground='blue')
+    start3_365_()
+#---Func3End---#
+
+
+
+
+
+ 
+
+#------ResultsWindow------#
+
+
+
+def results():
+
+    global results_
+
+    root = tk.Tk()
+    root.title("Results")
+    root.geometry("550x300")
+    menubar = Menu(root)
+    file = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='File', menu=file)
+    file.add_command(label='Total of All Results', command=None)#(results__t)#
+    file.add_command(label='New', command=None)
+    help = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='Help', menu=help)
+    help.add_command(label='Call Dimitri', command=None)
+    root.config(menu=menubar)
+    
+    lbl = Label(root, text='To see options, click File.')
+    lbl.grid(column=0, row=200)
+    lbl.place(x=265, y=35, anchor="center")
+    
+    
+
+    def _sum(results_):
+        
+
+        sum=0
+
+        for i in results_ :
+            sum = sum + float(i)
+        return (sum)
+
+    ans = _sum(results_)
+    print("Total of all funtions is, " , ans)
+    lbl_txt = Label(root, text="Total Payable from all functions is: ")
+    lbl_txt.grid(column=0, row=200)
+    lbl_txt.place(x= 265, y=65, anchor="center")
+    lbl_ans = Label(root, text=ans)
+    lbl_ans.grid(column=0, row=200)
+    lbl_ans.place(x=265, y=100, anchor="center")
+
+
+   
+
+    
+    root.mainloop()
+  
+
+
+
+
+
+#--options window--#
+
+def opt_win():
+
+        
+    root.title("Option Select")
+    root.geometry('550x300')
+    menubar = Menu(root)
+
+    file = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='File', menu=file)
+    file.add_command(label='Interest Over Fixed Period (365)', command=func1_365_)
+    file.add_command(label='Interest Over Fixed Period (360)', command=func1_360_)
+    file.add_command(label='Interest for Used and Unused (365)', command=func2_365_)
+    file.add_command(label='Interest for Used and Unused (360)', command=func2_360_)
+    file.add_command(label='Interest for delayed start of comp (365)', command=func3_365_)
+    file.add_command(label='Interest for delayed start of comp (360)', command=func3_360_)
+    file.add_command(label='Results', command=results)
+    file.add_command(label='Quit', command=root.destroy)
+
+
+    help = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='Help', menu=help)
+    help.add_command(label='Call Dimitri', command=None)
+    root.config(menu=menubar)
+
+    lbl = Label(root, text="To see option, click File.")
+    lbl.grid(column=0, row=200)
+    lbl.place(x=265, y=35, anchor="center")
+
+    lbl2 = Label(root, text="")
+    lbl2.grid(column=0, row=200)
+    lbl2.place(x=265, y=10, anchor="center")
+
+    root.mainloop()
+###---end---###
+
+opt_win()

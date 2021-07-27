@@ -193,7 +193,7 @@ def func2_360_():
         total_withdrawn = float(entries['Amount Withdrawn, $'].get())
         total_periods = float(entries['Number of Periods'].get())
         monthly = float(entries['No. of Monthly Payments'].get())
-        u = float(entries['Rate for Unspent, %'].get()) /100 / 12
+        u = float(entries['Rate for Unspent, %'].get()) /100 / 360
         total_loan = float(entries['Total Loan, $'].get())
         q = (1 + r) ** total_periods
         unspent = total_loan - total_withdrawn
@@ -252,7 +252,7 @@ def func2_365_():
         periods = float(entries['Number of Periods'].get())
         remaining_loan = float(entries['Amount Payable, $'].get())
         #calculation#
-        q = (1 + r)** n
+        q = (1 + r) ** n
         monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
         monthly = ("%8.2f" % monthly).strip()
         entries['No. of Monthly Payments'].delete(0, tk.END)

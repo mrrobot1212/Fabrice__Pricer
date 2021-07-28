@@ -237,45 +237,44 @@ def func2_360_():
 
 def func2_365_():
 
-    fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Number of Periods', 'No. of Monthly Payments',  'Amount Payable, $')
+    fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Annual Compounding Periods', 'Years Until Maturity',  'Amount Payable, $', 'Maturity Date')
 
-    def monthly__payment(entries):
-        
-        r = (float(ttk.Entry(root, text='Annual Rate, %').get())) / 100 / 12       
-        loan = float(entries['Amount Withdrawn, $'].get())
-        n =  float(entries['Number of Periods'].get())
-        periods = float(entries['Number of Periods'].get())
-        remaining_loan = float(entries['Amount Payable, $'].get())
-        #calculation#
-        q = (1 + r) ** n
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        monthly = ("%8.2f" % monthly).strip()
-        entries['No. of Monthly Payments'].delete(0, tk.END)
-        entries['No. of Monthly Payments'].insert(0, monthly )
-        print("Monthly Payment: %f" % float(monthly))
-
+    
     def final__balance(entries):
-        
         global results_
 
-        r= float(entries['Annual Rate, %'].get()) / 100 / 12
-        total_withdrawn = float(entries['Amount Withdrawn, $'].get())
-        total_periods = float(entries['Number of Periods'].get())
-        monthly = float(entries['No. of Monthly Payments'].get())
-        u = float(entries['Rate for Unspent, %'].get()) /100 / 12
+        
+        today = date.today()
+        maturity = today + relativedelta(days =+ int(365* float(entries['Years Until Maturity'].get())))
+
+        r= float(entries['Annual Rate, %'].get()) 
+        amnt_withdrawn = float(entries['Amount Withdrawn, $'].get())
+        n = float(entries['Annual Compounding Periods'].get())
+        y = float(entries['Years Until Maturity'].get())
+        u = float(entries['Rate for Unspent, %'].get()) 
         total_loan = float(entries['Total Loan, $'].get())
-        #calc#
-        q = (1 + r) ** total_periods
-        unspent = total_loan - total_withdrawn
-        unspent_r = (unspent * (1 + u) ** total_periods) - (unspent)
-        remaining = (q * total_withdrawn - ((q - 1) / r) * monthly) + (unspent_r)
-        remaining = ("%8.2f" % remaining).strip()
+        #UNused CALC##
+        amount = float(total_loan - amnt_withdrawn)
+        q = (1 + (u / 100))
+        unused_payable = (q * amount) - amount
+        #used calc#
+        fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
+        #total
+        fin = int(fin + unused_payable)
+        fin = (f"{fin:,d}")
+
+
         entries['Amount Payable, $'].delete(0, tk.END)
-        entries['Amount Payable, $'].insert(0, remaining)
-        print("Amount Payable: %f" % float(remaining))
-        results_.append(remaining)
+        entries['Amount Payable, $'].insert(0, fin)
+        entries['Maturity Date'].delete(0, tk.END)
+        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+        print("Amount Payable: %f" % float(fin))
+        results_.append(fin)
         print(results_)
 
+    
+
+    
     def make_form(root, fields):
         
         entries={}
@@ -312,6 +311,7 @@ def func2_365_():
     style2.configure('TEntry', foreground='blue')
     start2_365()
 #---Func2End---#
+ 
 
 
 

@@ -2,7 +2,9 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import *
 import tkinter as tk
-import random
+from datetime import date 
+from dateutil.relativedelta import relativedelta
+
 
 
 root=Tk()
@@ -12,21 +14,30 @@ results_ = []
 
 def func1_365_():
 
-    fields = ('Loan Principle, $','Annual Rate, %', 'Number of Compounding Periods',  'Years Until Maturity', 'Total Payable, $')
+    fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
 
-    
+
     def final_balance(entries):
         global results_ 
 
-        
+        today = date.today()
+        maturity = today + relativedelta(days =+ int(365* float(entries['Years Until Maturity'].get())))
+
+
         r = float(entries['Annual Rate, %'].get()) 
         loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Compunding Periods'].get()) 
+        n =  float(entries['Annual Compunding Periods'].get()) 
         y = float(entries['Years Until Maturity'].get())
-        fin = loan * (1 + (r/(n*100)))**(n*y) 
-        fin = ("%8.2f" % fin).strip()
+        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
+        
+        #fin = ("%8.2f" % fin).strip()
+        fin = (f"{fin:,d}")
+
+
         entries['Total Payable, $'].delete(0, tk.END)
         entries['Total Payable, $'].insert(0, fin )
+        entries['Maturity Date'].delete(0, tk.END)
+        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
         print("Total Payable, %f" % float(fin))
         results_.append(fin)
         print(results_)
@@ -69,7 +80,6 @@ def func1_365_():
     style2 = ttk.Style()
     style2.configure('TEntry', foreground='blue')
     start1_365()
-
 
 
 def func1_360_():

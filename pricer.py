@@ -28,6 +28,7 @@ def func1_365_():
         loan = float(entries['Loan Principle, $'].get())
         n =  float(entries['Annual Compunding Periods'].get()) 
         y = float(entries['Years Until Maturity'].get())
+        
         fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
         
         #fin = ("%8.2f" % fin).strip()
@@ -38,14 +39,12 @@ def func1_365_():
         entries['Total Payable, $'].insert(0, fin )
         entries['Maturity Date'].delete(0, tk.END)
         entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        print("Total Payable, %f" % float(fin))
         results_.append(fin)
         print(results_)
 
     def makeform(root, fields):
         entries = {}
         for field in fields:
-            print(field)
             row = tk.Frame(root)
             lab = tk.Label(row, width=22, text=field+": ", anchor='w')
             ent = tk.Entry(row)
@@ -268,7 +267,6 @@ def func2_365_():
         entries['Amount Payable, $'].insert(0, fin)
         entries['Maturity Date'].delete(0, tk.END)
         entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        print("Amount Payable: %f" % float(fin))
         results_.append(fin)
         print(results_)
 
@@ -279,7 +277,6 @@ def func2_365_():
         
         entries={}
         for field in fields:
-            print(field)
             row = tk.Frame(root)
             lab = tk.Label(row, width=22, text=field + ": ", anchor='w')
             ent = tk.Entry(row)

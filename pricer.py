@@ -12,38 +12,23 @@ results_ = []
 
 def func1_365_():
 
-    fields = ('Loan Principle, $','Annual Rate, %', 'Number of Payments',  'No of Monthly Payments', 'Total Payable, $')
+    fields = ('Loan Principle, $','Annual Rate, %', 'Number of Compounding Periods',  'Years Until Maturity', 'Total Payable, $')
 
-    def monthly_payment(entries):
-        
-        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
-        print("r", r)
-        loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Payments'].get())
-        remaining_loan = float(entries['Total Payable, $'].get())
-        q = (1 + r)** n
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        monthly = ("%8.2f" % monthly).strip()
-        entries['No of Monthly Payments'].delete(0, tk.END)
-        entries['No of Monthly Payments'].insert(0, monthly )
-        print("No of Monthly Payments: %f" % float(monthly))
-
+    
     def final_balance(entries):
         global results_ 
 
         
-        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
-        print("r", r)
+        r = float(entries['Annual Rate, %'].get()) 
         loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Payments'].get()) 
-        monthly = float(entries['No of Monthly Payments'].get())
-        q = (1 + r) ** n
-        remaining = q * loan  - ( (q - 1) / r) * monthly
-        remaining = ("%8.2f" % remaining).strip()
+        n =  float(entries['Number of Compunding Periods'].get()) 
+        y = float(entries['Years Until Maturity'].get())
+        fin = loan * (1 + (r/(n*100)))**(n*y) 
+        fin = ("%8.2f" % fin).strip()
         entries['Total Payable, $'].delete(0, tk.END)
-        entries['Total Payable, $'].insert(0, remaining )
-        print("Total Payable, %f" % float(remaining))
-        results_.append(remaining)
+        entries['Total Payable, $'].insert(0, fin )
+        print("Total Payable, %f" % float(fin))
+        results_.append(fin)
         print(results_)
 
     def makeform(root, fields):

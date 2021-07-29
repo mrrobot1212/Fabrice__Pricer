@@ -14,6 +14,11 @@ root=Tk()
 results_ = []
 
 
+
+
+
+
+
 def func3_365_():
 
     
@@ -45,13 +50,14 @@ def func3_365_():
             entries['Delay Start, (periods)'].insert(0, tk.END)
         ###calc###
         fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
-        fin = int(fin + x) 
+        fin = int(fin + x)
+        fin_res = fin 
         fin = (f"{fin:,d}")
         entries['Total Payable, $'].delete(0, tk.END)
         entries['Total Payable, $'].insert(0, fin )
         entries['Maturity Date'].delete(0, tk.END)
         entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin)
+        results_.append(fin_res)
         print(results_)
 
 
@@ -95,19 +101,6 @@ def func3_365_():
     style2.configure('TEntry', foreground='blue')
     start3_365_()
 #---Func3End---#
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -175,7 +168,7 @@ def opt_win():
 
     file = Menu(menubar, tearoff=0)
     menubar.add_cascade(label='File', menu=file)
-    file.add_command(label='func3 365 fix', command=func3_365_)
+    file.add_command(label='func1 360 fix', command=func1_360_)
     file.add_command(label='Results', command=results)
     file.add_command(label='Quit', command=root.destroy)
 

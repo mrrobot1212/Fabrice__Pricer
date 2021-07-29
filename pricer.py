@@ -5,13 +5,11 @@ import tkinter as tk
 from datetime import date 
 from dateutil.relativedelta import relativedelta
 
-
-
 root=Tk()
-
 results_ = []
-#---Func1Start---#
 
+
+#---Func1Start---#
 def func1_365_():
 
     fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
@@ -222,7 +220,6 @@ def func2_360_():
 
 
 
-
 def func2_365_():
 
     fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Annual Compounding Periods', 'Years Until Maturity',  'Amount Payable, $', 'Maturity Date')
@@ -306,57 +303,44 @@ def func2_365_():
 #---Func3Start---#
 def func3_360_():
     
-    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Number of Periods', 'No. of Monthly Payments', 'Amount Payable, $')
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
 
-    def monthly_payment(entries):
-        
-        r = (float(ttk.Entry(root, text='Annual Rate, $').get())) / 100 / 360
-        r= r * 30.41666667 * 1.013888889
-        print("r", r)
-        loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Periods'].get())
-        delay_periods = float(entries['Delay Start, (periods)'].get())
-        remaining_loan = float(entries['Amount Payable, $'].get())
-        #calculation#
-        delay = float(n - delay_periods)
-        q = (1 + r)** delay_periods
-        x = loan * (1 + r) - loan
-        if delay > 1 :
-            x  = (loan * (1 + r) - loan) * delay
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        monthly = float(monthly)
-        monthly = ("%8.2f" % monthly).strip()
-        entries['No. of Monthly Payments'].delete(0, tk.END)
-        entries['No. of Monthly Payments'].insert(0, monthly )
-        print("Monthly Payment: %f" % float(monthly))
-
+    
 
     def final_balance(entries):
 
+        
         global results_
 
-        r = (float(entries['Annual Rate, %'].get())) / 100 / 360    
-        r = r * 30.41666667 * 1.013888889
+        today = date.today()
+        maturity = today + relativedelta(days =+ int(365 * float(entries['Years Until Maturity'].get())))
+
+
+        r = float(entries['Annual Rate, %'].get())
+        r = (365/360) * r
         loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Periods'].get())
         delay_periods = float(entries['Delay Start, (periods)'].get())
-        remaining_loan = float(entries['Amount Payable, $'].get())
-        delay = float(n - delay_periods)
+        n =  float(entries['Annual Compounding Periods'].get())
+        y = float(entries['Years Until Maturity'].get())
+        payable = float(entries['Total Payable, $'].get())
+
+        ###delay-calc###
+        if delay_periods >= 0:
+            x = ((loan * (1 + (r / 100))) - loan) * delay_periods
+        else:
+            print("Invalid entry")
+            entries['Delay Start, (periods)'].delete(0, tk.END)
+            entries['Delay Start, (periods)'].insert(0, tk.END)
         ###calc###
-        x = loan * (1 + r) - loan
-        if delay > 1 :
-            x  = (loan * (1 + r) - loan) * delay
-        q = (1 + r) ** delay
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        monthly = ("%8.2f" % monthly).strip()
-        monthly = float(monthly)
-        remaining = (q * loan - ((q - 1) / r) * monthly) 
-        remaining = remaining + x
-        remaining = ("%8.2f" % remaining).strip()
-        entries['Amount Payable, $'].delete(0, tk.END)
-        entries['Amount Payable, $'].insert(0, remaining)
-        print("Amount Payable: %f" % float(remaining))
-        results_.append(remaining)
+        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
+        fin = int(fin + x)
+        fin_res = fin 
+        fin = (f"{fin:,d}")
+        entries['Total Payable, $'].delete(0, tk.END)
+        entries['Total Payable, $'].insert(0, fin )
+        entries['Maturity Date'].delete(0, tk.END)
+        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+        results_.append(fin_res)
         print(results_)
 
     
@@ -392,6 +376,7 @@ def func3_360_():
     style2 = ttk.Style()
     style2.configure('TEntry', foreground='blue')
     start3_360_()
+
 
 
 def func3_365_():

@@ -501,6 +501,8 @@ def results():
         return (sum)
 
     ans = _sum(results_)
+    ans = (f"{ans:,d}")
+
     print("Total of all funtions is, " , ans)
     lbl_txt = Label(root, text="Total Payable from all functions used is: ")
     lbl_txt.grid(column=0, row=200)

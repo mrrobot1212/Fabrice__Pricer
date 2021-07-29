@@ -29,17 +29,14 @@ def func1_365_():
         n =  float(entries['Annual Compunding Periods'].get()) 
         y = float(entries['Years Until Maturity'].get())
         
-        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
-        
-        #fin = ("%8.2f" % fin).strip()
+        fin = int(loan * (1 + (r/(n*100)))**(n*y))
+        fin_res = fin 
         fin = (f"{fin:,d}")
-
-
         entries['Total Payable, $'].delete(0, tk.END)
         entries['Total Payable, $'].insert(0, fin )
         entries['Maturity Date'].delete(0, tk.END)
         entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin)
+        results_.append(fin_res)
         print(results_)
 
     def makeform(root, fields):
@@ -260,6 +257,7 @@ def func2_365_():
         fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
         #total
         fin = int(fin + unused_payable)
+        fin_res = fin
         fin = (f"{fin:,d}")
 
 
@@ -267,7 +265,7 @@ def func2_365_():
         entries['Amount Payable, $'].insert(0, fin)
         entries['Maturity Date'].delete(0, tk.END)
         entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin)
+        results_.append(fin_res)
         print(results_)
 
     
@@ -407,57 +405,46 @@ def func3_360_():
 def func3_365_():
 
     
-    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Number of Periods', 'No. of Monthly Payments', 'Amount Payable, $')
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
 
     
-    def monthly_payment(entries):
-
-        r = float(entries['Annual Rate, %']).get() / 100 / 12
-        loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Periods'].get())
-        delay_periods = float(entries['Delay Start, (periods)'].get())
-        remaining_loan = float(entries['Amount Payable, $'].get())
-        #calculation#
-        delay = float(n - delay_periods)
-        q = (1 + r)** delay_periods
-        x = loan * (1 + r) - loan
-        if delay > 1 :
-            x  = (loan * (1 + r) - loan) * delay
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        monthly = ("%8.2f" % monthly).strip()
-        entries['No. of Monthly Payments'].delete(0, tk.END)
-        entries['No. of Monthly Payments'].insert(0, monthly )
-        print("Monthly Payment: %f" % float(monthly))
-        
-
+    
 
     def final_balance(entries):
-
         global results_
 
-        r = (float(entries['Annual Rate, %'].get()) / 100) / 12
+        today = date.today()
+        maturity = today + relativedelta(days =+ int(365 * float(entries['Years Until Maturity'].get())))
+
+
+        r = float(entries['Annual Rate, %'].get())
         loan = float(entries['Loan Principle, $'].get())
-        n =  float(entries['Number of Periods'].get())
         delay_periods = float(entries['Delay Start, (periods)'].get())
-        remaining_loan = float(entries['Amount Payable, $'].get())
-        delay = float(n - delay_periods)
+        n =  float(entries['Annual Compounding Periods'].get())
+        y = float(entries['Years Until Maturity'].get())
+        payable = float(entries['Total Payable, $'].get())
+
+        ###delay-calc###
+        if delay_periods >= 0:
+            x = ((loan * (1 + (r / 100))) - loan) * delay_periods
+        else:
+            print("Invalid entry")
+            entries['Delay Start, (periods)'].delete(0, tk.END)
+            entries['Delay Start, (periods)'].insert(0, tk.END)
         ###calc###
-        x = loan * (1 + r) - loan
-        if delay > 1 :
-            x  = (loan * (1 + r) - loan) * delay
-        y = x
-        q = (1 + r) ** delay
-        monthly = r * ( (q * loan - remaining_loan) / ( q - 1 ))
-        remaining = (q * loan - ((q - 1) / r) * monthly)
-        monthly = ("%8.2f" % monthly).strip()
-        remaining = float(remaining + y)
-        remaining = ("%8.2f" % remaining).strip()
-        entries['Amount Payable, $'].delete(0, tk.END)
-        entries['Amount Payable, $'].insert(0, remaining)
-        print("Amount Payable: %f" % float(remaining))
-        
-        results_.append(remaining)
+        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
+        fin = int(fin + x)
+        fin_res = fin 
+        fin = (f"{fin:,d}")
+        entries['Total Payable, $'].delete(0, tk.END)
+        entries['Total Payable, $'].insert(0, fin )
+        entries['Maturity Date'].delete(0, tk.END)
+        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+        results_.append(fin_res)
         print(results_)
+
+
+
         
     def make_form(root, fields):
             
@@ -525,9 +512,7 @@ def results():
     help.add_command(label='Call Dimitri', command=None)
     root.config(menu=menubar)
     
-    lbl = Label(root, text='To see options, click File.')
-    lbl.grid(column=0, row=200)
-    lbl.place(x=265, y=35, anchor="center")
+    
     
     
 
@@ -537,12 +522,12 @@ def results():
         sum=0
 
         for i in results_ :
-            sum = sum + float(i)
+            sum = sum + i
         return (sum)
 
     ans = _sum(results_)
     print("Total of all funtions is, " , ans)
-    lbl_txt = Label(root, text="Total Payable from all functions is: ")
+    lbl_txt = Label(root, text="Total Payable from all functions used is: ")
     lbl_txt.grid(column=0, row=200)
     lbl_txt.place(x= 265, y=65, anchor="center")
     lbl_ans = Label(root, text=ans)

@@ -84,7 +84,7 @@ def func1_360_():
     
     def monthly_payment(entries):
         
-        r = (float(entries['Annual Rate, %'].get())) / 100 / 360
+        r = (float(entries['Annual Rate, %'].get()))
         r = r * 30.41666667 * 1.013888889
         print("r", r)
         loan = float(entries['Loan Principle, $'].get())
@@ -518,9 +518,7 @@ def results():
 
     def _sum(results_):
         
-
         sum=0
-
         for i in results_ :
             sum = sum + i
         return (sum)

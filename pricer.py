@@ -11,8 +11,8 @@ results_ = []
 
 #---Func1Start---#
 def func1_365_():
-
-    fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
+    
+    fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Amount Payable, $', 'Maturity Date')
 
 
     def final_balance(entries):
@@ -27,15 +27,33 @@ def func1_365_():
         n =  float(entries['Annual Compunding Periods'].get()) 
         y = float(entries['Years Until Maturity'].get())
         
-        fin = int(loan * (1 + (r/(n*100)))**(n*y))
-        fin_res = fin 
-        fin = (f"{fin:,d}")
-        entries['Total Payable, $'].delete(0, tk.END)
-        entries['Total Payable, $'].insert(0, fin )
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
+
+        if n >=1 :
+
+
+            fin = int(loan * (1 + (r/(n*100)))**(n*y))
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+        else:
+            fin = int(loan * (1 + ((r/100) * y)))
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+
+
 
     def makeform(root, fields):
         entries = {}
@@ -76,10 +94,9 @@ def func1_365_():
     start1_365()
 
 
-
 def func1_360_():
 
-    fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
+    fields = ('Loan Principle, $','Annual Rate, %', 'Annual Compunding Periods',  'Years Until Maturity', 'Amount Payable, $', 'Maturity Date')
 
 
 
@@ -93,16 +110,29 @@ def func1_360_():
         loan = float(entries['Loan Principle, $'].get())
         n = float(entries['Annual Compunding Periods'].get())
         y = float(entries['Years Until Maturity'].get())
-        #cacl#
-        fin = int(loan * (1 + (r/(n*100)))**(n*y))
-        fin_res = fin
-        fin = (f"{fin:,d}")
-        entries['Total Payable, $'].delete(0, tk.END)
-        entries['Total Payable, $'].insert(0, fin)
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
+
+        if n >=1 :
+            fin = int(loan * (1 + (r/(n*100)))**(n*y))
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+        else:
+            fin = int(loan * (1 + ((r/100) * y)))
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+        
 
     def makeform(root, fields):
         
@@ -140,7 +170,6 @@ def func1_360_():
 #---Func1End---#
 
 
-
 #---Func2Start---#
 
 def func2_360_():
@@ -161,29 +190,54 @@ def func2_360_():
         r = (365/360) * r
         u = float(entries['Rate for Unspent, %'].get()) 
         u = (365/360) * u
-
         amnt_withdrawn = float(entries['Amount Withdrawn, $'].get())
         n = float(entries['Annual Compounding Periods'].get())
         y = float(entries['Years Until Maturity'].get())
         total_loan = float(entries['Total Loan, $'].get())
-        #UNused CALC##
-        amount = float(total_loan - amnt_withdrawn)
-        q = (1 + (u / 100))
-        unused_payable = (q * amount) - amount
-        #used calc#
-        fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
-        #total
-        fin = int(fin + unused_payable)
-        fin_res = fin
-        fin = (f"{fin:,d}")
+
+        if n >=1 :
+
+            
+            #UNused CALC##
+            amount = float(total_loan - amnt_withdrawn)
+            q = (1 + (u / 100))
+            unused_payable = (q * amount) - amount
+            #used calc#
+            fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
+            #total
+            fin = int(fin + unused_payable)
+            fin_res = fin
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin)
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
 
 
-        entries['Amount Payable, $'].delete(0, tk.END)
-        entries['Amount Payable, $'].insert(0, fin)
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
+           
+
+        else:
+            
+            #UNused Calc#
+            amount= float(total_loan - amnt_withdrawn)
+            unused_payable = int(amount * (1 + ((u/100) * y)) - amount)
+            #used calc#
+            used_payable = int(amnt_withdrawn * (1 + ((r/100) * y)))
+
+            fin = int(used_payable + unused_payable)
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+
+        
 
     def make_form(root, fields):
         
@@ -219,7 +273,6 @@ def func2_360_():
     start2_360()
 
 
-
 def func2_365_():
 
     fields = ('Annual Rate, %', 'Rate for Unspent, %',  'Amount Withdrawn, $', 'Total Loan, $', 'Annual Compounding Periods', 'Years Until Maturity',  'Amount Payable, $', 'Maturity Date')
@@ -238,25 +291,48 @@ def func2_365_():
         y = float(entries['Years Until Maturity'].get())
         u = float(entries['Rate for Unspent, %'].get()) 
         total_loan = float(entries['Total Loan, $'].get())
-        #UNused CALC##
-        amount = float(total_loan - amnt_withdrawn)
-        q = (1 + (u / 100))
-        unused_payable = (q * amount) - amount
-        #used calc#
-        fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
-        #total
-        fin = int(fin + unused_payable)
-        fin_res = fin
-        fin = (f"{fin:,d}")
+        
+        if n >=1 :
+
+            
+            #UNused CALC##
+            amount = float(total_loan - amnt_withdrawn)
+            q = (1 + (u / 100))
+            unused_payable = (q * amount) - amount
+            #used calc#
+            fin = int(amnt_withdrawn * (1 + (r/(n*100)))**(n*y))
+            #total
+            fin = int(fin + unused_payable)
+            fin_res = fin
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin)
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
 
 
-        entries['Amount Payable, $'].delete(0, tk.END)
-        entries['Amount Payable, $'].insert(0, fin)
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
+           
 
+        else:
+            
+            #UNused Calc#
+            amount= float(total_loan - amnt_withdrawn)
+            unused_payable = int(amount * (1 + ((u/100) * y)) - amount)
+            #used calc#
+            used_payable = int(amnt_withdrawn * (1 + ((r/100) * y)))
+
+            fin = int(used_payable + unused_payable)
+            fin_res = fin 
+            fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+        
     
 
     
@@ -295,15 +371,12 @@ def func2_365_():
     style2.configure('TEntry', foreground='blue')
     start2_365()
 #---Func2End---#
- 
-
-
 
 
 #---Func3Start---#
 def func3_360_():
     
-    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Amount Payable, $', 'Maturity Date')
 
     
 
@@ -322,27 +395,51 @@ def func3_360_():
         delay_periods = float(entries['Delay Start, (periods)'].get())
         n =  float(entries['Annual Compounding Periods'].get())
         y = float(entries['Years Until Maturity'].get())
-        payable = float(entries['Total Payable, $'].get())
+        payable = float(entries['Amount Payable, $'].get())
 
-        ###delay-calc###
-        if delay_periods >= 0:
-            x = ((loan * (1 + (r / 100))) - loan) * delay_periods
+        
+        if n >=1 :
+
+
+            ###delay-calc###
+            if delay_periods >= 0:
+                x = float(((loan * (1 + (r / 100))) - loan) * delay_periods)
+            else:
+                print("Invalid entry")
+                entries['Delay Start, (periods)'].delete(0, tk.END)
+                entries['Delay Start, (periods)'].insert(0, tk.END)
+            ###calc###
+            fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
+            fin = int(fin + x)
+            fin_res = fin 
+            #fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
         else:
-            print("Invalid entry")
-            entries['Delay Start, (periods)'].delete(0, tk.END)
-            entries['Delay Start, (periods)'].insert(0, tk.END)
-        ###calc###
-        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
-        fin = int(fin + x)
-        fin_res = fin 
-        fin = (f"{fin:,d}")
-        entries['Total Payable, $'].delete(0, tk.END)
-        entries['Total Payable, $'].insert(0, fin )
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
-
+            
+            ##delay_calc##
+            if delay_periods >= 0:
+                x = float(((loan * (1 + (r/100))) - loan) * delay_periods)
+            else: 
+                print("Invalid Entry")
+                entries['Delay Strt, (periods)'].delete(0, tk.END)
+                entries['Delay Strt, (periods)'].insert(0, tk.END)
+           
+            fin = int(loan * (1 + ((r/100) * y)))
+            fin_res = fin 
+            #fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+        
     
     def make_form(root, fields):
         
@@ -378,11 +475,10 @@ def func3_360_():
     start3_360_()
 
 
-
 def func3_365_():
 
     
-    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Total Payable, $', 'Maturity Date')
+    fields = ('Annual Rate, %', 'Loan Principle, $', 'Delay Start, (periods)', 'Annual Compounding Periods', 'Years Until Maturity', 'Amount Payable, $', 'Maturity Date')
 
     
     
@@ -399,26 +495,55 @@ def func3_365_():
         delay_periods = float(entries['Delay Start, (periods)'].get())
         n =  float(entries['Annual Compounding Periods'].get())
         y = float(entries['Years Until Maturity'].get())
-        payable = float(entries['Total Payable, $'].get())
+        payable = float(entries['Amount Payable, $'].get())
 
-        ###delay-calc###
-        if delay_periods >= 0:
-            x = ((loan * (1 + (r / 100))) - loan) * delay_periods
+
+
+        if n >=1 :  
+
+            ###delay-calc###
+            if delay_periods >= 0:
+                x = (((loan * (1 + (r / 100))) - loan) * delay_periods)
+            else:
+                print("Invalid entry")
+                entries['Delay Start, (periods)'].delete(0, tk.END)
+                entries['Delay Start, (periods)'].insert(0, tk.END)
+            ###calc###
+            fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
+            fin = int(fin + x)
+            fin_res = fin 
+            #fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin )
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+
+
+            
+
         else:
-            print("Invalid entry")
-            entries['Delay Start, (periods)'].delete(0, tk.END)
-            entries['Delay Start, (periods)'].insert(0, tk.END)
-        ###calc###
-        fin = int(loan * (1 + (r/(n*100)))**(n*y)) 
-        fin = int(fin + x)
-        fin_res = fin 
-        fin = (f"{fin:,d}")
-        entries['Total Payable, $'].delete(0, tk.END)
-        entries['Total Payable, $'].insert(0, fin )
-        entries['Maturity Date'].delete(0, tk.END)
-        entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
-        results_.append(fin_res)
-        print(results_)
+
+            if delay_periods >= 0:
+                fin = (loan * (1 + ((r/100) * y)))
+            else:
+                print("Invalid entry")
+                entries['Delay Start, (periods)'].delete(0, tk.END)
+                entries['Delay Start, (periods)'].insert(0, tk.END)
+            
+            fin_res = fin 
+            #fin = (f"{fin:,d}")
+            entries['Amount Payable, $'].delete(0, tk.END)
+            entries['Amount Payable, $'].insert(0, fin)
+            entries['Maturity Date'].delete(0, tk.END)
+            entries['Maturity Date'].insert(0, maturity.strftime("%b %d %Y"))
+            results_.append(fin_res)
+            print(results_)
+
+
+        
 
 
 
@@ -466,11 +591,10 @@ def func3_365_():
 
 
 
- 
+
+
 
 #------ResultsWindow------#
-
-
 
 def results():
 
@@ -518,10 +642,6 @@ def results():
     root.mainloop()
   
 
-
-
-
-
 #--options window--#
 
 def opt_win():
@@ -533,28 +653,44 @@ def opt_win():
 
     file = Menu(menubar, tearoff=0)
     menubar.add_cascade(label='File', menu=file)
-    file.add_command(label='Interest Over Fixed Period (365)', command=func1_365_)
-    file.add_command(label='Interest Over Fixed Period (360)', command=func1_360_)
-    file.add_command(label='Interest for Used and Unused (365)', command=func2_365_)
-    file.add_command(label='Interest for Used and Unused (360)', command=func2_360_)
-    file.add_command(label='Interest for delayed start of comp (365)', command=func3_365_)
-    file.add_command(label='Interest for delayed start of comp (360)', command=func3_360_)
     file.add_command(label='Results', command=results)
     file.add_command(label='Quit', command=root.destroy)
 
 
+
+    y_365 = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='365', menu=y_365)
+    y_365.add_command(label='Interest Over Fixed Period', command=func1_365_)
+    y_365.add_command(label='Interest for Used and Unused', command=func2_365_)
+    y_365.add_command(label='Interest for delayed start of comp', command=func3_365_)
+
+
+
+    y_360 = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='360', menu=y_360)
+    y_360.add_command(label='Interest Over Fixed Period', command=func1_360_)
+    y_360.add_command(label='Interest for Used and Unused', command=func2_360_)
+    y_360.add_command(label='Interest for delayed start of comp', command=func3_360_)
+
+
+
+    
+
+    
     help = Menu(menubar, tearoff=0)
     menubar.add_cascade(label='Help', menu=help)
     help.add_command(label='Call Dimitri', command=None)
     root.config(menu=menubar)
 
-    lbl = Label(root, text="To see option, click File.")
+    lbl = Label(root, text="To see options, go to Menu.")
     lbl.grid(column=0, row=200)
     lbl.place(x=265, y=35, anchor="center")
 
-    lbl2 = Label(root, text="")
+    lbl2 = Label(root, text="To see result, click File.")
     lbl2.grid(column=0, row=200)
-    lbl2.place(x=265, y=10, anchor="center")
+    lbl2.place(x=265, y=75, anchor="center")
+
+    
 
     root.mainloop()
 ###---end---###
